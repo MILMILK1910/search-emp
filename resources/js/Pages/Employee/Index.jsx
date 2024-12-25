@@ -6,24 +6,24 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 // employees ค่าที่ส่งมาจาก Controller
 
 export default function Index({ employees, query }) {
-    // สร้าง state สำหรับการค้นหาและการจัดเรียงข้อมูล
-    const [search, setSearch] = useState(query || '');
-    const [sortConfig, setSortConfig] = useState({ key: 'emp_no', direction: 'ascending' });
 
+    // สร้าง state สำหรับการค้นหา
+    const [search, setSearch] = useState(query || '');
     // ฟังก์ชันสำหรับการค้นหา
     const handleSearch = (e) => {
         e.preventDefault();
         // ส่งคำค้นหาไปยังเส้นทาง /employee
         router.get('/employee', { search });
     };
-
-    // ฟังก์ชันสำหรับการจัดเรียงข้อมูลพนักงาน
+    //สร้าง state สำหรับการจัดเรียงข้อมูล
+    const [sortConfig, setSortConfig] = useState({ key: 'emp_no', direction: 'ascending' });
+    // ฟังก์ชันสำหรับการจัดเรียงข้อมูล
     const sortedEmployees = [...employees.data].sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
+            return sortConfig.direction === 'ascending' ? -1 : 1; //ให้ a อยู่ก่อน b
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
+            return sortConfig.direction === 'ascending' ? 1 : -1; //a อยู่หลัง b
         }
         return 0;
     });
@@ -31,9 +31,11 @@ export default function Index({ employees, query }) {
     // ฟังก์ชันสำหรับการขอจัดเรียงข้อมูล
     const requestSort = (key) => {
         let direction = 'ascending';
+        // ถ้า key ที่ส่งมาเหมือนกับ key ที่กำหนดและ direction เป็น ascending ให้เปลี่ยนเป็น descending
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
             direction = 'descending';
         }
+        //กำกหนดค่าใหม่เป็น direction
         setSortConfig({ key, direction });
     };
 
@@ -61,7 +63,8 @@ export default function Index({ employees, query }) {
         if (currentPage > 3) {
             paginationLinks.push(
                 <button key="1"
-                    className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex" onClick={() => window.location.assign(employees.links[1].url)}>
+                    className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+                    onClick={() => window.location.assign(employees.links[1].url)}>
                     1
                 </button>
             );
@@ -71,7 +74,7 @@ export default function Index({ employees, query }) {
         }
 
 
-        // เริ่มลูปตั้งแต่หน้าที่ 1 หรือหน้าปัจจุบันลบ 1 (แล้วแต่ค่าไหนมากกว่า) จนถึงหน้าสุดท้ายหรือหน้าปัจจุบันบวก 2 (แล้วแต่ค่าน้อยกว่า)
+        // เริ่มลูปตั้งแต่หน้าที่ 1 หรือหน้าปัจจุบันลบ 1 (แล้วแต่ค่าไหนมากกว่า) จนถึงหน้าสุดท้ายหรือหน้าปัจจุบันบวก 1(แล้วแต่ค่าน้อยกว่า)
         for (let i = Math.max(1, currentPage - 1); i <= Math.min(lastPage, currentPage + 1); i++) {
             // เพิ่มปุ่มสำหรับแต่ละหน้าลงในอาร์เรย์ paginationLinks
             paginationLinks.push(
@@ -86,8 +89,8 @@ export default function Index({ employees, query }) {
             );
         }
 
-        // ถ้าหน้าปัจจุบันน้อยกว่าหน้าสุดท้าย - 2 ให้แสดง ... และหน้าสุดท้าย
-        if (currentPage < lastPage - 2) {
+        // ถ้าหน้าปัจจุบันน้อยกว่าหน้าสุดท้ายให้แสดง ... และหน้าสุดท้าย
+        if (currentPage < lastPage - 1) {
             paginationLinks.push(<span key="ellipsis2"
                 className='relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0'>...</span>);
             paginationLinks.push(
