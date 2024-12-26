@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { router } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 
 // query ค่าที่ส่งมาจาก Controller
 // employees ค่าที่ส่งมาจาก Controller
@@ -121,6 +122,7 @@ export default function Index({ employees, query }) {
                         Employee
                     </h2>
                 }>
+                <Head title="Employee" />
                 <div className="py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {/* ฟอร์มสำหรับการค้นหา */}
                     <div className="flex justify-center mb-6">
